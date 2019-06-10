@@ -6,6 +6,26 @@ This plugin shows products from the woocommerce plugin into a new page and has t
 
 [my options page] : This page can be accessed from the wp-admin side menu and it can control the quantity of diplayed products
 
+# Plugin Requirements:
+
+1- License: GPL-2.0+
+
+2- PHP version 5.3 (already installed in wordpress).
+
+# How to Install Plugin:
+
+You can go to plugin sections in wordpress and download it but we didn't publish it yet :), other than that you can follow the following instructions:
+
+1- Clone the plugin files from github.
+
+2- Put the whole folder in this particular folder (C:\xampp\htdocs\wordpress\wp-content\plugins) or in youur htdocs where you store your wordpress project with the following extension (wordpress\wp-content\plugins).
+
+3- Go to the plugins page after you start your project and then you will see the plugin installed and waiting to be activated.
+
+4- Enjoy the plugin :) .
+
+# Search Documentation:
+
 I used the following search articles and refereces in order to get it done:
 
 [beaver_builder](https://www.wpbeaverbuilder.com/creating-wordpress-plugin-easier-think/)
