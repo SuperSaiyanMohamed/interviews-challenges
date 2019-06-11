@@ -43,6 +43,12 @@ I used the following search articles and refereces in order to get it done:
 [Html Anchor link](https://html.com/anchors-links/)
 [wp_upload_dir codex](https://developer.wordpress.org/reference/functions/wp_upload_dir/)
 [wp_upload_dir other](http://hookr.io/functions/wp_upload_dir/)
+[wp_global_variables](https://codex.wordpress.org/Global_Variables)
+[$wpdb_global_variable](https://codex.wordpress.org/Class_Reference/wpdb)
+[plugin_dir_path](https://developer.wordpress.org/reference/functions/plugin_dir_path/)
+[wp_die](https://developer.wordpress.org/reference/functions/wp_die/)
+[query_monitor](https://wordpress.org/plugins/query-monitor/)
+[wp_upload_dir full specification](https://wordpress.stackexchange.com/questions/47970/wp-upload-dir-how-to-get-just-the-directory-name)
 
 This plugin can work on any host not just the local host
 
