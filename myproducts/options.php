@@ -1,8 +1,5 @@
 <?php
 
-//Calling the wordpress database global variable to interact with the wordpress database
-global $wpdb;
-
 // A path for the icon of the settings page
 $plugin_setting_picture = plugin_dir_path( __FILE__ ) . 'settings.png';
 
@@ -10,46 +7,11 @@ $plugin_setting_picture = plugin_dir_path( __FILE__ ) . 'settings.png';
 if (isset($_POST['new_option_name'])){
     //put the value of options into variable
     $value = $_POST['new_option_name'];
-//    //connect to database
-//    $connection = mysqli_connect('localhost','root','','datatest');
-//    //check if connection is made!
-//    if($connection){
-//        //select the count value in the database and store the new value in it
-//        if (mysqli_query($connection,'SELECT * FROM wp_usermeta WHERE meta_key = "count"')){
-//            $query = "UPDATE wp_count SET value_count = $value";
-//            $result = mysqli_query($connection,$query);
-//        }
-//        //check if the query carries on
-//        if(!$result){
-//            die('Query Failed');
-//        }
-//    }
-//    //condition for breaking connection with the database
-//    else{
-//        die('Database Connection Broken');
-//    }
-    
-    //check if the database connection is made
-    if($wpdb){
+    $name = 'product_count';
+
     //Insert a new table with the name wp_count with the arguments id_count & value_count
     //or update the table or it already exists
-    $wpdb->replace('wp_count',
-                    array(
-                            'id_count'=> 1,
-                            'value_count'=> $value
-                         ),
-                    array(
-                            '%d',
-                            '%d'
-                         )
-                  );
-    }
-    //if the database connection not made or dead exit the wordpress project with this message
-    else{
-        wp_die('Database Connection Broken');
-    }
-    
-    
+    update_option($name,$value);
 }
 
 // create custom plugin settings menu
@@ -85,7 +47,6 @@ function my_cool_plugin_settings_page() {
         <label><?php echo $_SESSION["count"] ?></label>
         </tr>
     </table>
-    
     <?php /* button to click on */ submit_button(); ?>
 </form>
 </div>
