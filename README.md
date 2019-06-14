@@ -49,6 +49,12 @@ I used the following search articles and refereces in order to get it done:
 [wp_die](https://developer.wordpress.org/reference/functions/wp_die/)
 [query_monitor](https://wordpress.org/plugins/query-monitor/)
 [wp_upload_dir full specification](https://wordpress.stackexchange.com/questions/47970/wp-upload-dir-how-to-get-just-the-directory-name)
+[WP_Qurey functions](https://code.tutsplus.com/tutorials/mastering-wp_query-related-functions--cms-22951)
+[WP_Meta_Query](https://codex.wordpress.org/Class_Reference/WP_Meta_Query)
+[get_query_var](https://codex.wordpress.org/Function_Reference/get_query_var)
+[WP_Query](https://codex.wordpress.org/Class_Reference/WP_Query)
+[woocommerce API retrieve a product](https://woocommerce.github.io/woocommerce-rest-api-docs/?php#retrieve-a-product)
+[wp_get_attachment_img_src](https://developer.wordpress.org/reference/functions/wp_get_attachment_image_src/)
 
 This plugin can work on any host not just the local host
 
