@@ -19,7 +19,11 @@ describe("Mock UI Automation", () => {
         cy.get("#submitAccount").click();
         cy.contains("p", "There are 8 errors");
     });
-    it("Add valid firstName only", () =>{
-        
+    xit("Add valid firstName only", () =>{
+        cy.get("#email_create").type("mohamed@gmail.com");
+        cy.get("#SubmitCreate").click();
+        cy.get("#customer_firstname").type("Mohamed");
+        cy.get("#submitAccount").click();
+        cy.get("ol").should("not.have.text", "firstname");
     });
 });
