@@ -1,1 +1,4 @@
-{}
+{
+    "baseUrl": "http://automationpractice.com/index.php",
+    "defaultCommandTimeout": 10000
+}
