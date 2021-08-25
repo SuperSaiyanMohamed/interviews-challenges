@@ -33,12 +33,19 @@ describe("Mock UI Automation", () => {
         cy.get("#submitAccount").click();
         cy.get("ol").should("not.have.text", "lastname");
     });
-    it("Add valid password only", () =>{
+    xit("Add valid password only", () =>{
         cy.get("#email_create").type("mohamed@gmail.com");
         cy.get("#SubmitCreate").click();
         cy.wait(2000);
         cy.get("#passwd").type("abcde");
         cy.get("#submitAccount").click();
         cy.get("ol").should("not.have.text", "passwd");
+    });
+    it("Add valid Address only", () =>{
+        cy.get("#email_create").type("mohamed@gmail.com");
+        cy.get("#SubmitCreate").click();
+        cy.get("#address1").type("test test");
+        cy.get("#submitAccount").click();
+        cy.get("ol").should("not.have.text", "address1");
     });
 });
