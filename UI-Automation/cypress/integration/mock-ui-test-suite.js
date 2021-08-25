@@ -76,11 +76,27 @@ describe("Mock UI Automation", () => {
         cy.get("#submitAccount").click();
         cy.get("ol").should("not.have.text", "phone number");
     });
-    it("Add valid alias address only", () =>{
+    xit("Add valid alias address only", () =>{
         cy.get("#email_create").type("mohamed@gmail.com");
         cy.get("#SubmitCreate").click();
         cy.get("#alias").type("test123");
         cy.get("#submitAccount").click();
         cy.get("ol").should("not.have.text", "alias");
+    });
+    it("Add valid info in all required fields", () =>{
+        cy.get("#email_create").type("mohamed@gmail.com");
+        cy.get("#SubmitCreate").click();
+        cy.get("#customer_firstname").type("Mohamed");
+        cy.get("#customer_lastname").type("Ahmed");
+        cy.get("#passwd").type("abcde");
+        cy.get("#address1").type("test test");
+        cy.get("#city").type("test");
+        cy.get("#id_state").select("Alabama");
+        cy.get("#postcode").type("34188");
+        cy.get("#alias").type("test123");
+        cy.get("#phone_mobile").type("5389746311");
+        cy.get("#alias").type("test123");
+        cy.get("#submitAccount").click();
+        cy.url().should('include', 'controller=my-account');
     });
 });
