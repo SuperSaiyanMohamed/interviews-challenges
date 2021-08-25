@@ -62,11 +62,18 @@ describe("Mock UI Automation", () => {
         cy.get("#submitAccount").click();
         cy.get("ol").should("not.have.text", "State");
     });
-    it("Add valid Zip Code only", () =>{
+    xit("Add valid Zip Code only", () =>{
         cy.get("#email_create").type("mohamed@gmail.com");
         cy.get("#SubmitCreate").click();
         cy.get("#postcode").type("34188");
         cy.get("#submitAccount").click();
         cy.get("ol").should("not.have.text", "Zip/Postal");
+    });
+    it("Add valid Zip Code only", () =>{
+        cy.get("#email_create").type("mohamed@gmail.com");
+        cy.get("#SubmitCreate").click();
+        cy.get("#phone_mobile").type("5389746311");
+        cy.get("#submitAccount").click();
+        cy.get("ol").should("not.have.text", "phone number");
     });
 });
