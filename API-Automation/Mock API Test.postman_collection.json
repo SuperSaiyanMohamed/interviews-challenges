@@ -1,0 +1,329 @@
+{
+	"info": {
+		"_postman_id": "147ea377-d33b-49d3-b292-519298869182",
+		"name": "Mock API Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Authors",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"MOCK_API\", \"https://fakerestapi.azurewebsites.net/api/v1\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var body = pm.response.json();\r",
+							"pm.test(\"Validation Test After Request\", () => {\r",
+							"    for (const item of body){\r",
+							"        pm.expect(typeof item[\"id\"]).to.be.oneOf(['number'], \"Not Number\");\r",
+							"        pm.expect(typeof item[\"idBook\"]).to.be.oneOf(['number'], \"Not Number\");\r",
+							"        pm.expect(typeof item[\"firstName\"]).to.be.string;\r",
+							"        pm.expect(typeof item[\"lastName\"]).to.be.string;\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{MOCK_API}}/Authors",
+					"host": [
+						"{{MOCK_API}}"
+					],
+					"path": [
+						"Authors"
+					]
+				},
+				"description": "Need to run this request first to intialize Global vars"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Authors",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var requestBody = JSON.parse(pm.request.body.raw);\r",
+							"pm.test(\"Testing Inputs Before Request\", () => {\r",
+							"    pm.expect(typeof requestBody[\"id\"]).to.be.oneOf([\"number\"], \"1st Input not passed\");\r",
+							"    pm.expect(typeof requestBody[\"idBook\"]).to.be.oneOf([\"number\"], \"2nd Input not passed\");\r",
+							"    pm.expect(requestBody[\"firstName\"]).to.be.string;\r",
+							"    pm.expect(requestBody[\"lastName\"]).to.be.string; \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var body = pm.response.json();\r",
+							"pm.test(\"Validation Test After Request\", () => {\r",
+							"    pm.expect(typeof body[\"id\"]).to.be.oneOf(['number'], \"Not Number\");\r",
+							"    pm.expect(typeof body[\"idBook\"]).to.be.oneOf(['number'], \"Not Number\");\r",
+							"    pm.expect(typeof body[\"firstName\"]).to.be.string;\r",
+							"    pm.expect(typeof body\r",
+							"    [\"lastName\"]).to.be.string;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 303,\r\n    \"idBook\": 303,\r\n    \"firstName\": \"Mohamed\",\r\n    \"lastName\": \"AboElSeed\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{MOCK_API}}/Authors",
+					"host": [
+						"{{MOCK_API}}"
+					],
+					"path": [
+						"Authors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Authors using idBook",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var body = pm.response.json();\r",
+							"pm.test(\"Validation Test After Request\", () => {\r",
+							"    for (const item of body){\r",
+							"        pm.expect(typeof item[\"id\"]).to.be.oneOf(['number'], \"Not Number\");\r",
+							"        pm.expect(typeof item[\"idBook\"]).to.be.oneOf(['number'], \"Not Number\");\r",
+							"        pm.expect(typeof item[\"firstName\"]).to.be.string;\r",
+							"        pm.expect(typeof item[\"lastName\"]).to.be.string;\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"idBook\", 6);\r",
+							"pm.test(\"Testing idBook\", () => {\r",
+							"    pm.expect(typeof pm.globals.get(\"idBook\")).to.be.oneOf([\"number\"], \"Not a Number\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{MOCK_API}}/Authors/authors/books/{{idBook}}",
+					"host": [
+						"{{MOCK_API}}"
+					],
+					"path": [
+						"Authors",
+						"authors",
+						"books",
+						"{{idBook}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Author by ID",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"idAuthor\", 9);\r",
+							"pm.test(\"Testing Author ID\", () => {\r",
+							"    pm.expect(typeof pm.globals.get(\"idAuthor\")).to.be.oneOf([\"number\"], \"Not a Number\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var body = pm.response.json();\r",
+							"pm.test(\"Validation Test After Request\", () => {\r",
+							"    pm.expect(typeof body[\"id\"]).to.be.oneOf(['number'], \"Not Number\");\r",
+							"    pm.expect(typeof body[\"idBook\"]).to.be.oneOf(['number'], \"Not Number\");\r",
+							"    pm.expect(typeof body[\"firstName\"]).to.be.string;\r",
+							"    pm.expect(typeof body[\"lastName\"]).to.be.string;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{MOCK_API}}/Authors/{{idAuthor}}",
+					"host": [
+						"{{MOCK_API}}"
+					],
+					"path": [
+						"Authors",
+						"{{idAuthor}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Author by ID",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var requestBody = JSON.parse(pm.request.body.raw);\r",
+							"pm.test(\"Testing Author ID\", () => {\r",
+							"    pm.expect(typeof pm.globals.get(\"idAuthor\")).to.be.oneOf([\"number\"], \"Not a Number\");\r",
+							"});\r",
+							"pm.test(\"Testing Inputs Before Request\", () => {\r",
+							"    pm.expect(typeof requestBody[\"id\"]).to.be.oneOf([\"number\"], \"1st Input not passed\");\r",
+							"    pm.expect(typeof requestBody[\"idBook\"]).to.be.oneOf([\"number\"], \"2nd Input not passed\");\r",
+							"    pm.expect(requestBody[\"firstName\"]).to.be.string;\r",
+							"    pm.expect(requestBody[\"lastName\"]).to.be.string; \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"var body = pm.response.json();\r",
+							"pm.test(\"Validation Test After Request\", () => {\r",
+							"    pm.expect(typeof body[\"id\"]).to.be.oneOf(['number'], \"Not Number\");\r",
+							"    pm.expect(typeof body[\"idBook\"]).to.be.oneOf(['number'], \"Not Number\");\r",
+							"    pm.expect(typeof body[\"firstName\"]).to.be.string;\r",
+							"    pm.expect(typeof body[\"lastName\"]).to.be.string;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 8,\r\n  \"idBook\": 8,\r\n  \"firstName\": \"Mohamed\",\r\n  \"lastName\": \"AboElSeed\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{MOCK_API}}/Authors/{{idAuthor}}",
+					"host": [
+						"{{MOCK_API}}"
+					],
+					"path": [
+						"Authors",
+						"{{idAuthor}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Author by ID",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.test(\"Testing Author ID\", () => {\r",
+							"    pm.expect(typeof pm.globals.get(\"idAuthor\")).to.be.oneOf([\"number\"], \"Not a Number\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"tests[\"Testing Response Code\"] = responseCode.code === 200;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{MOCK_API}}/Authors/{{idAuthor}}",
+					"host": [
+						"{{MOCK_API}}"
+					],
+					"path": [
+						"Authors",
+						"{{idAuthor}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
