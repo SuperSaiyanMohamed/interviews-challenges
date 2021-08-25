@@ -69,11 +69,18 @@ describe("Mock UI Automation", () => {
         cy.get("#submitAccount").click();
         cy.get("ol").should("not.have.text", "Zip/Postal");
     });
-    it("Add valid mobile number only", () =>{
+    xit("Add valid mobile number only", () =>{
         cy.get("#email_create").type("mohamed@gmail.com");
         cy.get("#SubmitCreate").click();
         cy.get("#phone_mobile").type("5389746311");
         cy.get("#submitAccount").click();
         cy.get("ol").should("not.have.text", "phone number");
+    });
+    it("Add valid alias address only", () =>{
+        cy.get("#email_create").type("mohamed@gmail.com");
+        cy.get("#SubmitCreate").click();
+        cy.get("#alias").type("test123");
+        cy.get("#submitAccount").click();
+        cy.get("ol").should("not.have.text", "alias");
     });
 });
