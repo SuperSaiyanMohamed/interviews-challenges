@@ -14,18 +14,18 @@ In order to setup each section and run it smoothly please follow each section di
 - then wait till finish after that type:
 - <strong>npm run cypress:open</strong>
 - When the framework dashboard loads it should be as the following image:
-- [![Cypress Dashboard](Cypress Dashboard)](https://drive.google.com/file/d/10zupiC0H5YfQDut4gJ9teDTeWc451SSX/view?usp=sharing)
+- [![CypressDashboard](CypressDashboard)](https://drive.google.com/file/d/10zupiC0H5YfQDut4gJ9teDTeWc451SSX/view?usp=sharing)
 - Press on the mock-ui-test-suite.js as the following image and watch the magic happens.
 - [![Magic](Magic "Magic")](https://drive.google.com/file/d/1CK2ysdMHipEgBhVs8vjTE074y_d9UZR9/view?usp=sharing "Magic")
 
 ## Mock API Automation Testing Setup:
 - Clone this repo on your PC.
 - Open postman and add collection as the following image.
-- [![Postman Import](Postman Import "Postman Import")](https://drive.google.com/file/d/1fvsy9vlu4SnRAhWX_R1_N4I8QHIoMz6x/view?usp=sharing "Postman Import")
+- [![PostmanImport](PostmanImport "PostmanImport")](https://drive.google.com/file/d/1fvsy9vlu4SnRAhWX_R1_N4I8QHIoMz6x/view?usp=sharing "Postman Import")
 - Import the collection from the folder API-Automation.
 - After importing successfully the collection run a new runner tab and drag and drop the collection to it then press start run and watch the magic happens.
-- [![Runner Tab](Runner Tab "Runner Tab")](https://drive.google.com/file/d/1ewmDMqB8DLL93q45MWquvikscHJJRuby/view?usp=sharing "Runner Tab")
-- [![Runner Result](Runner Result "Runner Result")](https://drive.google.com/file/d/1_ERjTpnfVN3PO-BSGEFobMZqa91wyx_3/view?usp=sharing "Runner Result")
+- [![RunnerTab](RunnerTab "RunnerTab")](https://drive.google.com/file/d/1ewmDMqB8DLL93q45MWquvikscHJJRuby/view?usp=sharing "Runner Tab")
+- [![RunnerResult](RunnerResult "RunnerResult")](https://drive.google.com/file/d/1_ERjTpnfVN3PO-BSGEFobMZqa91wyx_3/view?usp=sharing "Runner Result")
 
 ## Knawat Bonus API Automation Testing Setup:
 - Same as the Mock API Automation Testing Setup steps but the difference here is that You should import the collection from Knawat-Bonus-API-Automation.
