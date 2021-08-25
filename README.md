@@ -30,4 +30,6 @@ In order to setup each section and run it smoothly please follow each section di
 ## Knawat Bonus API Automation Testing Setup:
 - Same as the Mock API Automation Testing Setup steps but the difference here is that You should import the collection from Knawat-Bonus-API-Automation.
 
+<strong>Note: In order to access the test cases of UI Automation, Mock API Automation and, Knawat Bonus API Automation You need to go to the folder Test-Cases-Challenge in the repo and open the file Knawat Challenge or You can access it on google sheet online from that [link](https://docs.google.com/spreadsheets/d/1fFH2iCGldqBR_Rd26rJsXc66HG0wlzSRb_GH9MJjC0I/edit?usp=sharing "link")</strong>
+
 <strong>I hope this demonstartion is easy enough, for any comments and suggestions please open an issue and let's discuss it :)</strong>
