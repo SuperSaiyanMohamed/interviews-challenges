@@ -1,102 +1,62 @@
+const UserData = require('../fixtures/users.json');
+const RegistrationPage = require('../pageobjects/registrationPage.js');
+
+
 describe("Mock UI Automation", () => {
     beforeEach(() => {
-        cy.visit("/");
-        cy.contains("a","Sign in").click();
+        RegistrationPage.pressSignInButton();
     });
-    xit("Testing with empty input in email address field", () =>{
-        cy.get("#email_create").type("text");
-        cy.get("#SubmitCreate").click();
-        cy.contains("li","Invalid email address.");
+    it("Testing with empty input in email address field", () =>{
+        RegistrationPage.typeRegistrationEmailAndSubmit("text");
+        RegistrationPage.checkListofErrors();
     });
-    xit("Testing with valid email address", () =>{
-        cy.get("#email_create").type("mohamed@gmail.com");
-        cy.get("#SubmitCreate").click();
-        cy.url().should('include', '#account-creation');
+    it("Testing with valid email address", () =>{
+        RegistrationPage.typeRegistrationEmailAndSubmit(UserData.user.email);
+        RegistrationPage.checkUrlAccountCreate();
     });
-    xit("Leave register fields empty and click register", () =>{
-        cy.get("#email_create").type("mohamed@gmail.com");
-        cy.get("#SubmitCreate").click();
-        cy.get("#submitAccount").click();
-        cy.contains("p", "There are 8 errors");
+    it("Leave register fields empty and click register", () =>{
+        RegistrationPage.typeRegistrationEmailAndSubmit(UserData.user.email);
+        RegistrationPage.clickSubmitAccountButtonAndCheckError();
     });
-    xit("Add valid firstName only", () =>{
-        cy.get("#email_create").type("mohamed@gmail.com");
-        cy.get("#SubmitCreate").click();
-        cy.get("#customer_firstname").type("Mohamed");
-        cy.get("#submitAccount").click();
-        cy.get("ol").should("not.have.text", "firstname");
+    it("Add valid firstName only", () =>{
+        RegistrationPage.typeRegistrationEmailAndSubmit(UserData.user.email);
+        RegistrationPage.addingFirstName(UserData.user.firstname);
     });
-    xit("Add valid lastName only", () =>{
-        cy.get("#email_create").type("mohamed@gmail.com");
-        cy.get("#SubmitCreate").click();
-        cy.get("#customer_lastname").type("Mohamed");
-        cy.get("#submitAccount").click();
-        cy.get("ol").should("not.have.text", "lastname");
+    it("Add valid lastName only", () =>{
+        RegistrationPage.typeRegistrationEmailAndSubmit(UserData.user.email);
+        RegistrationPage.addingLastName(UserData.user.lastname);
     });
-    xit("Add valid password only", () =>{
-        cy.get("#email_create").type("mohamed@gmail.com");
-        cy.get("#SubmitCreate").click();
+    it("Add valid password only", () =>{
+        RegistrationPage.typeRegistrationEmailAndSubmit(UserData.user.email);
         cy.wait(2000);
-        cy.get("#passwd").type("abcde");
-        cy.get("#submitAccount").click();
-        cy.get("ol").should("not.have.text", "passwd");
+        RegistrationPage.addingPassword(UserData.user.password);
     });
-    xit("Add valid Address only", () =>{
-        cy.get("#email_create").type("mohamed@gmail.com");
-        cy.get("#SubmitCreate").click();
-        cy.get("#address1").type("test test");
-        cy.get("#submitAccount").click();
-        cy.get("ol").should("not.have.text", "address1");
+    it("Add valid Address only", () =>{
+        RegistrationPage.typeRegistrationEmailAndSubmit(UserData.user.email);
+        RegistrationPage.addingAddress(UserData.user.address);
     });
-    xit("Add valid city only", () =>{
-        cy.get("#email_create").type("mohamed@gmail.com");
-        cy.get("#SubmitCreate").click();
-        cy.get("#city").type("test test");
-        cy.get("#submitAccount").click();
-        cy.get("ol").should("not.have.text", "city");
+    it("Add valid city only", () =>{
+        RegistrationPage.typeRegistrationEmailAndSubmit(UserData.user.email);
+        RegistrationPage.addingCity(UserData.user.city);
     });
-    xit("Add valid State only", () =>{
-        cy.get("#email_create").type("mohamed@gmail.com");
-        cy.get("#SubmitCreate").click();
-        cy.get("#id_state").select("Alabama");
-        cy.get("#submitAccount").click();
-        cy.get("ol").should("not.have.text", "State");
+    it("Add valid State only", () =>{
+        RegistrationPage.typeRegistrationEmailAndSubmit(UserData.user.email);
+        RegistrationPage.addingState(UserData.user.state);
     });
-    xit("Add valid Zip Code only", () =>{
-        cy.get("#email_create").type("mohamed@gmail.com");
-        cy.get("#SubmitCreate").click();
-        cy.get("#postcode").type("34188");
-        cy.get("#submitAccount").click();
-        cy.get("ol").should("not.have.text", "Zip/Postal");
+    it("Add valid Zip Code only", () =>{
+        RegistrationPage.typeRegistrationEmailAndSubmit(UserData.user.email);
+        RegistrationPage.addingZipCode(UserData.user.zipcode);
     });
-    xit("Add valid mobile number only", () =>{
-        cy.get("#email_create").type("mohamed@gmail.com");
-        cy.get("#SubmitCreate").click();
-        cy.get("#phone_mobile").type("5389746311");
-        cy.get("#submitAccount").click();
-        cy.get("ol").should("not.have.text", "phone number");
+    it("Add valid mobile number only", () =>{
+        RegistrationPage.typeRegistrationEmailAndSubmit(UserData.user.email);
+        RegistrationPage.addingMobileNumber(UserData.user.mobilePhone)
     });
-    xit("Add valid alias address only", () =>{
-        cy.get("#email_create").type("mohamed@gmail.com");
-        cy.get("#SubmitCreate").click();
-        cy.get("#alias").type("test123");
-        cy.get("#submitAccount").click();
-        cy.get("ol").should("not.have.text", "alias");
+    it("Add valid alias address only", () =>{
+        RegistrationPage.typeRegistrationEmailAndSubmit(UserData.user.email);
+        RegistrationPage.addingAliasAddress(UserData.user.aliasAddress);
     });
     it("Add valid info in all required fields", () =>{
-        cy.get("#email_create").type("mohamed@gmail.com");
-        cy.get("#SubmitCreate").click();
-        cy.get("#customer_firstname").type("Mohamed");
-        cy.get("#customer_lastname").type("Ahmed");
-        cy.get("#passwd").type("abcde");
-        cy.get("#address1").type("test test");
-        cy.get("#city").type("test");
-        cy.get("#id_state").select("Alabama");
-        cy.get("#postcode").type("34188");
-        cy.get("#alias").type("test123");
-        cy.get("#phone_mobile").type("5389746311");
-        cy.get("#alias").type("test123");
-        cy.get("#submitAccount").click();
-        cy.url().should('include', 'controller=my-account');
+        RegistrationPage.typeRegistrationEmailAndSubmit(UserData.user.email);
+        RegistrationPage.addingFullInfo(UserData.user);
     });
 });
