@@ -1,0 +1,897 @@
+{
+	"info": {
+		"_postman_id": "c7794108-bb30-475a-bb5c-b97b012fdbd6",
+		"name": "Knawat Bonus Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Generate Token",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"Knawat_API\", \"https://mp.knawat.io/api\");\r",
+							"var requestBody = JSON.parse(pm.request.body.raw);\r",
+							"pm.test(\"Testing Inputs Before Request\", () => {\r",
+							"    pm.expect(requestBody[\"consumerKey\"]).to.be.string;\r",
+							"    pm.expect(requestBody[\"consumerSecret\"]).to.be.string; \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200) );\r",
+							"var resBody = pm.response.json();\r",
+							"pm.test(\"Validation Test After Request\", () => {\r",
+							"    pm.expect(typeof resBody[\"channel\"][\"_id\"]).to.be.string;\r",
+							"    pm.expect(typeof resBody[\"channel\"][\"url\"]).to.be.string;\r",
+							"    pm.expect(typeof resBody[\"channel\"][\"status\"]).to.be.string;\r",
+							"    pm.expect(typeof resBody[\"channel\"][\"currency\"]).to.be.string;\r",
+							"    pm.expect(typeof resBody[\"channel\"][\"token\"]).to.be.string;\r",
+							"});\r",
+							"pm.collectionVariables.set(\"TOKEN\", resBody[\"channel\"][\"token\"]);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"consumerKey\": \"a6120f60-06ed-11ec-97de-cf308f94a980\",\r\n  \"consumerSecret\": \"3b6b3286-9c93-49c6-87c6-8f31fbd8680f\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Knawat_API}}/token",
+					"host": [
+						"{{Knawat_API}}"
+					],
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get My Store Info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200) );\r",
+							"var resBody = pm.response.json();\r",
+							"pm.test(\"Validation Testing for outputs\", () => {\r",
+							"    pm.expect(typeof resBody[\"consumer_key\"]).to.be.string;\r",
+							"    pm.expect(typeof resBody[\"consumer_secret\"]).to.be.string;\r",
+							"    pm.expect(typeof resBody[\"created\"]).to.be.string;\r",
+							"    pm.expect(typeof resBody[\"status\"]).to.be.string;\r",
+							"    pm.expect(typeof resBody[\"sale_price\"]).to.be.oneOf(['number'], \"Not Number\");\r",
+							"    pm.expect(typeof resBody[\"sale_price_operator\"]).to.be.oneOf(['number'], \"Not Number\");\r",
+							"    pm.expect(typeof resBody[\"compared_at_price\"]).to.be.oneOf(['number'], \"Not Number\");\r",
+							"    pm.expect(typeof resBody[\"compared_at_price_operator\"]).to.be.oneOf(['number'], \"Not Number\");\r",
+							"    pm.expect(typeof resBody[\"currency\"]).to.be.string;\r",
+							"    pm.expect(typeof resBody[\"zone\"]).to.be.string;\r",
+							"    pm.expect(typeof resBody[\"internal_data\"]).to.be.oneOf(['object'], \"Not an Object\");\r",
+							"    pm.expect(typeof resBody[\"updated\"]).to.be.string;\r",
+							"    pm.expect(typeof resBody[\"name\"]).to.be.string;\r",
+							"    pm.expect(typeof resBody[\"type\"]).to.be.string;\r",
+							"    pm.expect(typeof resBody[\"languages\"]).to.be.oneOf(['object'], \"Not an Object\");\r",
+							"    pm.expect(typeof resBody[\"external_data\"]).to.be.oneOf(['object'], \"Not an Object\");\r",
+							"    pm.expect(typeof resBody[\"users\"]).to.be.oneOf(['object'], \"Not an Object\");\r",
+							"    pm.expect(typeof resBody[\"subscription\"]).to.be.oneOf(['object'], \"Not an Object\");\r",
+							"    pm.expect(typeof resBody[\"url\"]).to.be.string;\r",
+							"\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Knawat_API}}/stores/me",
+					"host": [
+						"{{Knawat_API}}"
+					],
+					"path": [
+						"stores",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get My Products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200) );\r",
+							"var resBody = pm.response.json();\r",
+							"pm.test(\"Validation Testing for outputs\", () => {\r",
+							"    pm.expect(typeof resBody[\"products\"]).to.be.oneOf(['object'], \"Not an Object\");\r",
+							"    for (item of resBody[\"products\"]){\r",
+							"        pm.expect(typeof item[\"sku\"]).to.be.string;\r",
+							"        pm.expect(typeof item[\"archive\"]).to.be.oneOf(['boolean'], \"Not a boolean\");\r",
+							"        pm.expect(typeof item[\"name\"]).to.be.oneOf(['object'], \"Not an object\");\r",
+							"        pm.expect(typeof item[\"description\"]).to.be.oneOf(['object'], \"Not an Object\");  //This one has an error, it returns undefined while it should return object as per documentation\r",
+							"        pm.expect(typeof item[\"images\"]).to.be.oneOf(['array',], \"Not an Array\");  //This one has an error it returns object while it should return Array as per documentation\r",
+							"        pm.expect(typeof item[\"updated\"]).to.be.string;\r",
+							"        pm.expect(typeof item[\"created\"]).to.be.string;\r",
+							"        pm.expect(typeof item[\"categories\"]).to.be.oneOf(['object'], \"Not an Object\");\r",
+							"        pm.expect(typeof item[\"attributes\"]).to.be.oneOf(['object'], \"Not an Object\");\r",
+							"        pm.expect(typeof item[\"variations\"]).to.be.oneOf(['object'], \"Not an Object\");\r",
+							"    }\r",
+							"    pm.expect(typeof resBody[\"total\"]).to.be.oneOf(['number'], \"Not a Number\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Knawat_API}}/catalog/products",
+					"host": [
+						"{{Knawat_API}}"
+					],
+					"path": [
+						"catalog",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Products to my Store",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var requestBody = JSON.parse(pm.request.body.raw);\r",
+							"pm.test(\"Testing Inputs Before Request\", () => {\r",
+							"    pm.expect(requestBody[\"products\"]).to.be.a(\"array\", \"Not an array\");\r",
+							"    for (item of requestBody[\"products\"]){\r",
+							"        pm.expect(item[\"sku\"]).to.be.string;\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200) );\r",
+							"var resBody = pm.response.json();\r",
+							"pm.test(\"Validation Testing for outputs\", () => {\r",
+							"    pm.expect(resBody).to.be.a(\"object\", \"Not an Object\");\r",
+							"    pm.expect(resBody[\"success\"]).to.be.a(\"array\", \"Not an Object\");\r",
+							"    for (item of resBody[\"success\"]){\r",
+							"        pm.expect(item).to.be.string;\r",
+							"    }\r",
+							"    pm.expect(resBody[\"outOfStock\"]).to.be.a(\"array\", \"Not an Object\");\r",
+							"    for (item of resBody[\"outOfStock\"]){\r",
+							"        pm.expect(item).to.be.string;\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"products\": [\r\n        {\r\n            \"sku\": \"JHFJFTBA01-3424\"\r\n        },\r\n        {\r\n            \"sku\": \"31113191\"\r\n        },\r\n        {\r\n            \"sku\": \"89166403\"\r\n        },\r\n        {\r\n            \"sku\": \"79331432\"\r\n        },\r\n        {\r\n            \"sku\": \"81689563\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Knawat_API}}/catalog/products",
+					"host": [
+						"{{Knawat_API}}"
+					],
+					"path": [
+						"catalog",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Product from my Store",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200) );\r",
+							"var resBody = pm.response.json();\r",
+							"pm.test(\"Validation Testing for outputs\", () => {\r",
+							"    pm.expect(resBody).to.be.a(\"object\", \"Not an object\");\r",
+							"    pm.expect(resBody[\"product\"]).to.be.a(\"object\", \"Not an object\");\r",
+							"    pm.expect(resBody[\"product\"][\"status\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"product\"][\"message\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"product\"][\"sku\"]).to.be.string;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{Knawat_API}}/catalog/products/{{SKU}}",
+					"host": [
+						"{{Knawat_API}}"
+					],
+					"path": [
+						"catalog",
+						"products",
+						"{{SKU}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get My Products Count",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200) );\r",
+							"var resBody = pm.response.json();\r",
+							"pm.test(\"Validation Testing for outputs\", () => {\r",
+							"    pm.expect(resBody).to.be.a(\"object\", \"Not an object\");\r",
+							"    pm.expect(resBody[\"total\"]).to.be.a(\"number\", \"Not a Number\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Knawat_API}}/catalog/products/count",
+					"host": [
+						"{{Knawat_API}}"
+					],
+					"path": [
+						"catalog",
+						"products",
+						"count"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get General Product by SKU",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"SKU\",\"31113191\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200) );\r",
+							"var resBody = pm.response.json();\r",
+							"pm.test(\"Validation Testing for outputs\", () => {\r",
+							"    pm.expect(resBody).to.be.a(\"object\", \"Not an Object\");\r",
+							"    pm.expect(resBody[\"sku\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"product_currency\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"name\"]).to.be.a(\"object\", \"Not an Object\");\r",
+							"    pm.expect(resBody[\"archive\"]).to.be.a(\"boolean\", \"Not a boolean\");\r",
+							"    pm.expect(resBody[\"description\"]).to.be.a(\"object\", \"Not an Object\");\r",
+							"    pm.expect(resBody[\"supplier\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"images\"]).to.be.a(\"array\", \"Not an array\");\r",
+							"    pm.expect(resBody[\"tax_class\"]).to.be.a(\"number\", \"Not a number\");\r",
+							"    pm.expect(resBody[\"categories\"]).to.be.a(\"array\", \"Not an array\");\r",
+							"    pm.expect(resBody[\"attributes\"]).to.be.a(\"array\", \"Not an array\");\r",
+							"    pm.expect(resBody[\"variations\"]).to.be.a(\"array\", \"Not an array\");\r",
+							"    pm.expect(resBody[\"ship_from\"]).to.be.a(\"array\", \"Not an array\");\r",
+							"    pm.expect(resBody[\"created\"]).to.be.string;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Knawat_API}}/products/{{SKU}}",
+					"host": [
+						"{{Knawat_API}}"
+					],
+					"path": [
+						"products",
+						"{{SKU}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Order",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var requestBody = JSON.parse(pm.request.body.raw);\r",
+							"pm.test(\"Testing Inputs Before Request\", () => {\r",
+							"    pm.expect(requestBody).to.be.a(\"object\", \"Not an Object\");\r",
+							"    pm.expect(requestBody[\"items\"]).to.be.a(\"array\", \"Not an array\");\r",
+							"    for (item of requestBody[\"items\"]){\r",
+							"        pm.expect(item[\"sku\"]).to.be.string;\r",
+							"        pm.expect(item[\"quantity\"]).to.be.a(\"number\", \"Not a Number\");\r",
+							"    }\r",
+							"    pm.expect(requestBody[\"shipping\"]).to.be.a(\"object\", \"Not an Object\");\r",
+							"    pm.expect(requestBody[\"first_name\"]).to.be.string;\r",
+							"    pm.expect(requestBody[\"last_name\"]).to.be.string;\r",
+							"    pm.expect(requestBody[\"address_1\"]).to.be.string;\r",
+							"    pm.expect(requestBody[\"city\"]).to.be.string;\r",
+							"    pm.expect(requestBody[\"state\"]).to.be.string;\r",
+							"    pm.expect(requestBody[\"country\"]).to.be.string;\r",
+							"    pm.expect(requestBody[\"status\"]).to.be.string;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200) );\r",
+							"var resBody = pm.response.json();\r",
+							"pm.test(\"Validation Testing for outputs\", () => {\r",
+							"    pm.expect(resBody).to.be.a(\"object\", \"response is not an object\");\r",
+							"    pm.expect(resBody[\"status\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"data\"]).to.be.a(\"object\", \"data is not an Object\");\r",
+							"    let data = resBody[\"data\"];\r",
+							"    pm.environment.set(\"orderID\", data[\"id\"]);\r",
+							"    pm.expect(data[\"id\"]).to.be.string;\r",
+							"    pm.expect(data[\"externalId\"]).to.be.string;\r",
+							"    pm.expect(data[\"status\"]).to.be.string;\r",
+							"    pm.expect(data[\"subStatuses\"]).to.be.a(\"array\", \"subStatuses is not an Array\");\r",
+							"    pm.expect(data[\"createDate\"]).to.be.string;\r",
+							"    pm.expect(data[\"updateDate\"]).to.be.string;\r",
+							"    pm.expect(data[\"items\"]).to.be.a(\"array\", \"Items is not an Array\");\r",
+							"    for (item of data[\"items\"]){\r",
+							"        pm.expect(item[\"id\"]).to.be.string;\r",
+							"        pm.expect(item[\"sku\"]).to.be.string;\r",
+							"        pm.expect(item[\"name\"]).to.be.string;\r",
+							"        pm.expect(item[\"description\"]).to.be.string;\r",
+							"        pm.expect(item[\"rate\"]).to.be.a(\"number\", \"Rate is not a number\");\r",
+							"        pm.expect(item[\"quantity\"]).to.be.a(\"number\", \"quantity is not a number\");\r",
+							"        pm.expect(item[\"quantityCancelled\"]).to.be.a(\"number\", \"quantityCancelled is not a number\");\r",
+							"        pm.expect(item[\"discount\"]).to.be.a(\"number\", \"discount is not a number\");\r",
+							"        pm.expect(item[\"total\"]).to.be.a(\"number\", \"total is not a number\");\r",
+							"        pm.expect(item[\"taxId\"]).to.be.string;\r",
+							"        pm.expect(item[\"taxName\"]).to.be.string;\r",
+							"        pm.expect(item[\"taxType\"]).to.be.string;\r",
+							"        pm.expect(item[\"taxPercentage\"]).to.be.a(\"number\", \"taxPercentage is not a number\");\r",
+							"    }\r",
+							"    pm.expect(data[\"shipping\"]).to.be.a(\"object\", \"shipping is not an object\");\r",
+							"    let shipping = data[\"shipping\"];\r",
+							"\r",
+							"    pm.expect(shipping[\"first_name\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"last_name\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"address_1\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"address_2\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"city\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"state\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"postcode\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"country\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"email\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"phone\"]).to.be.string;\r",
+							"    \r",
+							"    pm.expect(data[\"invoice_url\"]).to.be.string;\r",
+							"    pm.expect(data[\"shipping_method\"]).to.be.string;\r",
+							"    pm.expect(data[\"shipmentDate\"]).to.be.string;\r",
+							"    pm.expect(data[\"shipping_charge\"]).to.be.a(\"number\", \"shipping_charge is not a number\");\r",
+							"    pm.expect(data[\"discount\"]).to.be.a(\"number\", \"discount is not a number\");\r",
+							"    pm.expect(data[\"adjustment\"]).to.be.a(\"number\", \"adjustment is not a number\");\r",
+							"    pm.expect(data[\"adjustmentDescription\"]).to.be.string;\r",
+							"    pm.expect(data[\"subscription\"]).to.be.string;\r",
+							"    pm.expect(data[\"total\"]).to.be.a(\"number\", \"total is not a number\");\r",
+							"    pm.expect(data[\"hasQtyCancelled\"]).to.be.a(\"boolean\", \"hasQtyCancelled is not a boolean\");\r",
+							"    pm.expect(data[\"notes\"]).to.be.string;\r",
+							"    pm.expect(data[\"orderNumber\"]).to.be.string;\r",
+							"    pm.expect(data[\"invoices\"]).to.be.a(\"array\", \"invoices is not an array\");\r",
+							"    pm.expect(data[\"isInclusiveTax\"]).to.be.a(\"boolean\", \"isInclusiveTax is not a boolean\");\r",
+							"    pm.expect(data[\"taxTotal\"]).to.be.a(\"number\", \"taxTotal is not a number\");\r",
+							"    pm.expect(data[\"warnings\"]).to.be.string;\r",
+							"    pm.expect(data[\"financialStatus\"]).to.be.string;\r",
+							"    pm.expect(data[\"fulfillmentStatus\"]).to.be.string;\r",
+							"    pm.expect(data[\"warningsSnippet\"]).to.be.string;\r",
+							"    pm.expect(data[\"knawat_order_status\"]).to.be.string;\r",
+							"\r",
+							"    pm.expect(resBody[\"warnings\"]).to.be.a(\"array\", \"warnings are not an array\");\r",
+							"    for (warning of resBody[\"warnings\"]){\r",
+							"        pm.expect(warning).to.be.a(\"object\", \"warningItem is not an object\");\r",
+							"    }   \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"items\":[\r\n        {\r\n            \"sku\": \"8682164836736\",\r\n            \"quantity\": 1\r\n        }\r\n    ],\r\n    \"shipping\":{\r\n        \"first_name\": \"Mohamed\",\r\n        \"last_name\": \"Ahmed\",\r\n        \"address_1\": \"Test Test\",\r\n        \"city\": \"Istanbul\",\r\n        \"state\": \"Istanbul\",\r\n        \"country\": \"TR\"\r\n    },\r\n    \"status\": \"processing\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Knawat_API}}/orders",
+					"host": [
+						"{{Knawat_API}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update an Order",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var requestBody = JSON.parse(pm.request.body.raw);\r",
+							"pm.test(\"Testing Inputs Before Request\", () => {\r",
+							"    pm.expect(requestBody).to.be.a(\"object\", \"Not an Object\");\r",
+							"    pm.expect(requestBody[\"items\"]).to.be.a(\"array\", \"Not an array\");\r",
+							"    for (item of requestBody[\"items\"]){\r",
+							"        pm.expect(item[\"sku\"]).to.be.string;\r",
+							"        pm.expect(item[\"quantity\"]).to.be.a(\"number\", \"Not a Number\");\r",
+							"    }\r",
+							"    pm.expect(requestBody[\"shipping\"]).to.be.a(\"object\", \"Not an Object\");\r",
+							"    pm.expect(requestBody[\"first_name\"]).to.be.string;\r",
+							"    pm.expect(requestBody[\"last_name\"]).to.be.string;\r",
+							"    pm.expect(requestBody[\"address_1\"]).to.be.string;\r",
+							"    pm.expect(requestBody[\"city\"]).to.be.string;\r",
+							"    pm.expect(requestBody[\"state\"]).to.be.string;\r",
+							"    pm.expect(requestBody[\"country\"]).to.be.string;\r",
+							"    pm.expect(requestBody[\"status\"]).to.be.string;\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200) );\r",
+							"var resBody = pm.response.json();\r",
+							"pm.test(\"Validation Testing for outputs\", () => {\r",
+							"    pm.expect(resBody).to.be.a(\"object\", \"response is not an object\");\r",
+							"    pm.expect(resBody[\"status\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"data\"]).to.be.a(\"object\", \"data is not an Object\");\r",
+							"    let data = resBody[\"data\"];\r",
+							"    pm.expect(data[\"id\"]).to.be.string;\r",
+							"    pm.expect(data[\"externalId\"]).to.be.string;\r",
+							"    pm.expect(data[\"status\"]).to.be.string;\r",
+							"    pm.expect(data[\"subStatuses\"]).to.be.a(\"array\", \"subStatuses is not an Array\");\r",
+							"    pm.expect(data[\"createDate\"]).to.be.string;\r",
+							"    pm.expect(data[\"updateDate\"]).to.be.string;\r",
+							"    pm.expect(data[\"items\"]).to.be.a(\"array\", \"Items is not an Array\");\r",
+							"    for (item of data[\"items\"]){\r",
+							"        pm.expect(item[\"id\"]).to.be.string;\r",
+							"        pm.expect(item[\"sku\"]).to.be.string;\r",
+							"        pm.expect(item[\"name\"]).to.be.string;\r",
+							"        pm.expect(item[\"description\"]).to.be.string;\r",
+							"        pm.expect(item[\"rate\"]).to.be.a(\"number\", \"Rate is not a number\");\r",
+							"        pm.expect(item[\"quantity\"]).to.be.a(\"number\", \"quantity is not a number\");\r",
+							"        pm.expect(item[\"quantityCancelled\"]).to.be.a(\"number\", \"quantityCancelled is not a number\");\r",
+							"        pm.expect(item[\"discount\"]).to.be.a(\"number\", \"discount is not a number\");\r",
+							"        pm.expect(item[\"total\"]).to.be.a(\"number\", \"total is not a number\");\r",
+							"        pm.expect(item[\"taxId\"]).to.be.string;\r",
+							"        pm.expect(item[\"taxName\"]).to.be.string;\r",
+							"        pm.expect(item[\"taxType\"]).to.be.string;\r",
+							"        pm.expect(item[\"taxPercentage\"]).to.be.a(\"number\", \"taxPercentage is not a number\");\r",
+							"    }\r",
+							"    pm.expect(data[\"shipping\"]).to.be.a(\"object\", \"shipping is not an object\");\r",
+							"    let shipping = data[\"shipping\"];\r",
+							"\r",
+							"    pm.expect(shipping[\"first_name\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"last_name\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"address_1\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"address_2\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"city\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"state\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"postcode\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"country\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"email\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"phone\"]).to.be.string;\r",
+							"    \r",
+							"    pm.expect(data[\"invoice_url\"]).to.be.string;\r",
+							"    pm.expect(data[\"shipping_method\"]).to.be.string;\r",
+							"    pm.expect(data[\"shipmentDate\"]).to.be.string;\r",
+							"    pm.expect(data[\"shipping_charge\"]).to.be.a(\"number\", \"shipping_charge is not a number\");\r",
+							"    pm.expect(data[\"discount\"]).to.be.a(\"number\", \"discount is not a number\");\r",
+							"    pm.expect(data[\"adjustment\"]).to.be.a(\"number\", \"adjustment is not a number\");\r",
+							"    pm.expect(data[\"adjustmentDescription\"]).to.be.string;\r",
+							"    pm.expect(data[\"subscription\"]).to.be.string;\r",
+							"    pm.expect(data[\"total\"]).to.be.a(\"number\", \"total is not a number\");\r",
+							"    pm.expect(data[\"hasQtyCancelled\"]).to.be.a(\"boolean\", \"hasQtyCancelled is not a boolean\");\r",
+							"    pm.expect(data[\"notes\"]).to.be.string;\r",
+							"    pm.expect(data[\"orderNumber\"]).to.be.string;\r",
+							"    pm.expect(data[\"invoices\"]).to.be.a(\"array\", \"invoices is not an array\");\r",
+							"    pm.expect(data[\"isInclusiveTax\"]).to.be.a(\"boolean\", \"isInclusiveTax is not a boolean\");\r",
+							"    pm.expect(data[\"taxTotal\"]).to.be.a(\"number\", \"taxTotal is not a number\");\r",
+							"    pm.expect(data[\"warnings\"]).to.be.string;\r",
+							"    pm.expect(data[\"financialStatus\"]).to.be.string;\r",
+							"    pm.expect(data[\"fulfillmentStatus\"]).to.be.string;\r",
+							"    pm.expect(data[\"warningsSnippet\"]).to.be.string;\r",
+							"    pm.expect(data[\"knawat_order_status\"]).to.be.string;\r",
+							"\r",
+							"    pm.expect(resBody[\"warnings\"]).to.be.a(\"array\", \"warnings are not an array\");\r",
+							"    for (warning of resBody[\"warnings\"]){\r",
+							"        pm.expect(warning).to.be.a(\"object\", \"warningItem is not an object\");\r",
+							"    }   \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"items\": [\r\n        {\r\n            \"sku\": \"8682582620672\",\r\n            \"quantity\": 1\r\n        },\r\n        {\r\n            \"sku\": \"8682582813951\",\r\n            \"quantity\": 1\r\n        }\r\n    ],\r\n    \"shipping\": {\r\n        \"first_name\": \"Mohamed\",\r\n        \"last_name\": \"Aboelseed\",\r\n        \"address_1\": \"Test El Test\",\r\n        \"city\": \"Istanbul\",\r\n        \"state\": \"Istanbul\",\r\n        \"country\": \"TR\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Knawat_API}}/orders/{{orderID}}",
+					"host": [
+						"{{Knawat_API}}"
+					],
+					"path": [
+						"orders",
+						"{{orderID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200) );\r",
+							"var resBody = pm.response.json();\r",
+							"pm.test(\"Validation Testing for outputs\", () => {\r",
+							"    pm.expect(resBody).to.be.a(\"array\", \"response is not an array\");\r",
+							"    for (order of resBody){\r",
+							"        pm.expect(order[\"id\"]).to.be.string;\r",
+							"        pm.expect(order[\"externalId\"]).to.be.string;\r",
+							"        pm.expect(order[\"status\"]).to.be.string;\r",
+							"        pm.expect(order[\"createDate\"]).to.be.string;\r",
+							"        pm.expect(order[\"updateDate\"]).to.be.string;\r",
+							"        pm.expect(order[\"invoice_url\"]).to.be.string;\r",
+							"        pm.expect(order[\"shipping_method\"]).to.be.string;\r",
+							"        pm.expect(order[\"shipmentDate\"]).to.be.string;\r",
+							"        pm.expect(order[\"total\"]).to.be.a(\"number\", \"total is not a number\");\r",
+							"        pm.expect(order[\"orderNumber\"]).to.be.string;\r",
+							"        pm.expect(order[\"financialStatus\"]).to.be.string;\r",
+							"        pm.expect(order[\"fulfillmentStatus\"]).to.be.string;\r",
+							"        pm.expect(order[\"warningsSnippet\"]).to.be.string;\r",
+							"        pm.expect(order[\"knawat_order_status\"]).to.be.string;\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Knawat_API}}/orders",
+					"host": [
+						"{{Knawat_API}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Order by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200) );\r",
+							"var resBody = pm.response.json();\r",
+							"pm.test(\"Validation Testing for outputs\", () => {\r",
+							"    pm.expect(resBody).to.be.a(\"object\", \"response is not an object\");\r",
+							"    pm.expect(resBody[\"id\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"externalId\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"status\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"subStatuses\"]).to.be.a(\"array\", \"subStatuses is not an Array\");\r",
+							"    pm.expect(resBody[\"createDate\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"updateDate\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"items\"]).to.be.a(\"array\", \"Items is not an Array\");\r",
+							"    for (item of resBody[\"items\"]){\r",
+							"        pm.expect(item[\"id\"]).to.be.string;\r",
+							"        pm.expect(item[\"sku\"]).to.be.string;\r",
+							"        pm.expect(item[\"name\"]).to.be.string;\r",
+							"        pm.expect(item[\"description\"]).to.be.string;\r",
+							"        pm.expect(item[\"rate\"]).to.be.a(\"number\", \"Rate is not a number\");\r",
+							"        pm.expect(item[\"quantity\"]).to.be.a(\"number\", \"quantity is not a number\");\r",
+							"        pm.expect(item[\"quantityCancelled\"]).to.be.a(\"number\", \"quantityCancelled is not a number\");\r",
+							"        pm.expect(item[\"discount\"]).to.be.a(\"number\", \"discount is not a number\");\r",
+							"        pm.expect(item[\"total\"]).to.be.a(\"number\", \"total is not a number\");\r",
+							"        pm.expect(item[\"taxId\"]).to.be.string;\r",
+							"        pm.expect(item[\"taxName\"]).to.be.string;\r",
+							"        pm.expect(item[\"taxType\"]).to.be.string;\r",
+							"        pm.expect(item[\"taxPercentage\"]).to.be.a(\"number\", \"taxPercentage is not a number\");\r",
+							"    }\r",
+							"    pm.expect(resBody[\"shipping\"]).to.be.a(\"object\", \"shipping is not an object\");\r",
+							"    let shipping = resBody[\"shipping\"];\r",
+							"\r",
+							"    pm.expect(shipping[\"first_name\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"last_name\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"address_1\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"address_2\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"city\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"state\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"postcode\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"country\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"email\"]).to.be.string;\r",
+							"    pm.expect(shipping[\"phone\"]).to.be.string;\r",
+							"    \r",
+							"    pm.expect(resBody[\"invoice_url\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"shipping_method\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"shipmentDate\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"shipping_charge\"]).to.be.a(\"number\", \"shipping_charge is not a number\");\r",
+							"    pm.expect(resBody[\"discount\"]).to.be.a(\"number\", \"discount is not a number\");\r",
+							"    pm.expect(resBody[\"adjustment\"]).to.be.a(\"number\", \"adjustment is not a number\");\r",
+							"    pm.expect(resBody[\"adjustmentDescription\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"subscription\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"total\"]).to.be.a(\"number\", \"total is not a number\");\r",
+							"    pm.expect(resBody[\"hasQtyCancelled\"]).to.be.a(\"boolean\", \"hasQtyCancelled is not a boolean\");\r",
+							"    pm.expect(resBody[\"notes\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"orderNumber\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"invoices\"]).to.be.a(\"array\", \"invoices is not an array\");\r",
+							"    pm.expect(resBody[\"isInclusiveTax\"]).to.be.a(\"boolean\", \"isInclusiveTax is not a boolean\");\r",
+							"    pm.expect(resBody[\"taxTotal\"]).to.be.a(\"number\", \"taxTotal is not a number\");\r",
+							"    pm.expect(resBody[\"warnings\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"financialStatus\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"fulfillmentStatus\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"warningsSnippet\"]).to.be.string;\r",
+							"    pm.expect(resBody[\"knawat_order_status\"]).to.be.string; \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Knawat_API}}/orders/{{orderID}}",
+					"host": [
+						"{{Knawat_API}}"
+					],
+					"path": [
+						"orders",
+						"{{orderID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cancel Order by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code >= 200 && pm.response.code <=299){\r",
+							"    pm.test(\"Status code is 200\", () => pm.response.to.have.status(200) );\r",
+							"    var resBody = pm.response.json();\r",
+							"    pm.test(\"Validation Testing for outputs\", () => {\r",
+							"        pm.expect(resBody).to.be.a(\"object\", \"response is not an object\");\r",
+							"        pm.expect(resBody[\"status\"]).to.be.string;\r",
+							"        pm.expect(resBody[\"data\"]).to.be.a(\"object\", \"data is not an object\");\r",
+							"        let data = resBody[\"data\"];\r",
+							"        pm.expect(data[\"order_id\"]).to.be.string;\r",
+							"    });\r",
+							"}\r",
+							"else if (pm.response.code >= 400 && pm.response.code <= 499){\r",
+							"    var resBody = pm.response.json();\r",
+							"    pm.test(\"Validation assert of Errors\", () => {\r",
+							"        pm.expect(resBody).to.be.a(\"object\", \"resBody is not an object\");\r",
+							"        pm.expect(resBody[\"errors\"]).to.be.a(\"array\", \"errors is not an array\");\r",
+							"        for (error of resBody[\"errors\"]){\r",
+							"            pm.expect(error[\"message\"]).to.be.string;\r",
+							"        }\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{Knawat_API}}/orders/{{orderID}}",
+					"host": [
+						"{{Knawat_API}}"
+					],
+					"path": [
+						"orders",
+						"{{orderID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Invoices",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => pm.response.to.have.status(200) );\r",
+							"var resBody = pm.response.json();\r",
+							"pm.test(\"Validation Testing for outputs\", () => {\r",
+							"    pm.expect(resBody).to.be.a(\"object\", \"response is not an object\");\r",
+							"    pm.expect(resBody[\"invoices\"]).to.be.a(\"array\", \"invoices is not an array\");\r",
+							"    if (resBody[\"invoices\"].length > 0){\r",
+							"        for (invoice of resBody[\"invoices\"]){\r",
+							"            pm.expect(invoice[\"invoice_id\"]).to.be.string;\r",
+							"            pm.expect(invoices[\"customer_name\"]).to.be.string;\r",
+							"            pm.expect(invoices[\"customer_id\"]).to.be.string;\r",
+							"            pm.expect(invoices[\"status\"]).to.be.string;\r",
+							"            pm.expect(invoices[\"invoice_number\"]).to.be.string;\r",
+							"            pm.expect(invoices[\"reference_number\"]).to.be.string;\r",
+							"            pm.expect(invoices[\"date\"]).to.be.string;\r",
+							"            pm.expect(invoices[\"due_date\"]).to.be.string;\r",
+							"            pm.expect(invoices[\"due_days\"]).to.be.string;\r",
+							"            pm.expect(invoices[\"total\"]).to.be.a(\"number\", \"total is not a number\");\r",
+							"            pm.expect(invoices[\"balance\"]).to.be.a(\"number\", \"total is not a number\");\r",
+							"            pm.expect(invoices[\"created_time\"]).to.be.string;\r",
+							"            pm.expect(invoices[\"last_modified_time\"]).to.be.string;\r",
+							"            pm.expect(invoices[\"shipping_charge\"]).to.be.a(\"number\", \"total is not a number\");\r",
+							"            pm.expect(invoices[\"adjustment\"]).to.be.a(\"number\", \"total is not a number\");\r",
+							"            pm.expect(invoices[\"customer_name\"]).to.be.string;\r",
+							"        }\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Knawat_API}}/invoices",
+					"host": [
+						"{{Knawat_API}}"
+					],
+					"path": [
+						"invoices"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "TOKEN",
+			"value": ""
+		}
+	]
+}
