@@ -4,6 +4,7 @@ const RegistrationPage = require('../pageobjects/registrationPage.js');
 
 describe("Mock UI Automation", () => {
     beforeEach(() => {
+        // cy.request({url: "/", failOnStatusCode: false}).then(() => {RegistrationPage.pressSignInButton();});
         RegistrationPage.pressSignInButton();
     });
     it("Testing with empty input in email address field", () =>{

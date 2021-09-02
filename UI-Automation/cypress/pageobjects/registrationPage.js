@@ -19,7 +19,7 @@ class RegistrationPage{
     get customerAliasAddress () { return cy.get("#alias"); }
 
     pressSignInButton () {
-        cy.visit("/");
+        cy.visit("/", {failOnStatusCode: false});
         this.signInButton.click();
     }
 
